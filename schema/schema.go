@@ -998,22 +998,15 @@ type MountedEncryptionKey struct {
 	Version    string `json:"version,omitempty"`
 }
 
-// NPMConfig description: Configuration for resolving from a NPM registry.
+// NPMPackagesConnection description: Configuration for a connection to an NPM packages repository.
 // TODO: [npm-package-support-credentials] Add a credential field to NPMConfig.
-type NPMConfig struct {
+type NPMPackagesConnection struct {
 	// Dependencies description: An array of "(@scope/)?packageName@version" strings specifying which NPM packages to mirror on Sourcegraph.
 	Dependencies []string `json:"dependencies,omitempty"`
 	// RateLimit description: Rate limit applied when making background API requests to the NPM registry.
 	RateLimit *NPMRateLimit `json:"rateLimit,omitempty"`
 	// Registry description: The URL at which the NPM registry can be found.
 	Registry string `json:"registry"`
-}
-
-// NPMPackagesConnection description: Configuration for a connection to an NPM packages repository.
-type NPMPackagesConnection struct {
-	// NpmConfig description: Configuration for resolving from a NPM registry.
-	// TODO: [npm-package-support-credentials] Add a credential field to NPMConfig.
-	NpmConfig *NPMConfig `json:"npmConfig,omitempty"`
 }
 
 // NPMRateLimit description: Rate limit applied when making background API requests to the NPM registry.

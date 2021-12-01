@@ -189,10 +189,10 @@ func (s *NPMPackagesSyncer) packageDependencies(ctx context.Context, repoUrlPath
 }
 
 func (s *NPMPackagesSyncer) npmDependencies() []string {
-	if s.Config == nil || s.Config.NpmConfig == nil || s.Config.NpmConfig.Dependencies == nil {
+	if s.Config == nil || s.Config.Dependencies == nil {
 		return nil
 	}
-	return s.Config.NpmConfig.Dependencies
+	return s.Config.Dependencies
 }
 
 // gitPushDependencyTag pushes a git tag to the given bareGitDirectory path. The

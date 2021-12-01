@@ -72,9 +72,7 @@ func TestRoundTripRedactExternalServiceConfig(t *testing.T) {
 	}
 	npmPackagesConfig := schema.NPMPackagesConnection{
 		// TODO: [npm-package-support-credentials] Add a credential field here
-		NpmConfig: &schema.NPMConfig{
-			Dependencies: []string{"placeholder"},
-		},
+		Dependencies: []string{"placeholder"},
 	}
 	otherConfig := schema.OtherExternalServiceConnection{
 		Url:                   someSecret,
@@ -145,7 +143,7 @@ func TestRoundTripRedactExternalServiceConfig(t *testing.T) {
 		{
 			kind:      extsvc.KindNPMPackages,
 			config:    &npmPackagesConfig,
-			editField: func(cfg interface{}) *string { return &cfg.(*schema.NPMPackagesConnection).NpmConfig.Dependencies[0] },
+			editField: func(cfg interface{}) *string { return &cfg.(*schema.NPMPackagesConnection).Dependencies[0] },
 		},
 		{
 			kind:   extsvc.KindOther,

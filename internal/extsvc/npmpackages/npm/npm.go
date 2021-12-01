@@ -122,7 +122,7 @@ func runNPMCommand(ctx context.Context, config *schema.NPMPackagesConnection, ar
 	defer cancel()
 
 	ctx, traceLog, endObservation := operations.runCommand.WithAndLogger(ctx, &err, observation.Args{LogFields: []otlog.Field{
-		otlog.String("registry", config.NpmConfig.Registry),
+		otlog.String("registry", config.Registry),
 		otlog.String("args", strings.Join(args, ", ")),
 	}})
 	defer endObservation(1, observation.Args{})
@@ -141,7 +141,7 @@ func runNPMCommand(ctx context.Context, config *schema.NPMPackagesConnection, ar
 	//     defer func(){ errLogout := npmLoginToken.Logout(); if err == nil { err = errLogout } }()
 	//     npmLoginToken.doStuff(...)
 
-	registry := config.NpmConfig.Registry
+	registry := config.Registry
 	if len(registry) != 0 {
 		cmd.Env = append(
 			cmd.Env, fmt.Sprintf("%s=%s", npmConfigRegistryEnvVar, registry))

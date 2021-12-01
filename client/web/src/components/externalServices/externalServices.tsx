@@ -1242,27 +1242,24 @@ const NPM_PACKAGES: AddExternalServiceOptions = {
     jsonSchema: npmPackagesSchemaJSON,
     defaultDisplayName: 'NPM Dependencies',
     defaultConfig: `{
-  "npmConfig": {
-    "registry": "https://registry.npmjs.org",
-    "dependencies": []
-  }
+  "registry": "https://registry.npmjs.org",
+  "dependencies": []
 }`,
     instructions: (
         <div>
             <ol>
                 <li>
-                    In the configuration below, set <Field>npmConfig.registries</Field> to the list of NPM registries.
-                    For example,
-                    <code>["https://registry.npmjs.mycompany.com", "https://registry.npmjs.org/"]</code>. Note that this
-                    URL may not be the same as where packages can be searched (such as{' '}
-                    <code>https://www.npmjs.org</code>). If you're unsure about the exact registry URL for a custom
-                    registry, check the URLs for packages that have already been resolved, such as those in existing
-                    lock files like <code>yarn.lock</code>.
+                    In the configuration below, set <Field>registry</Field> to the applicable NPM registry. For example,
+                    <code>"https://registry.npmjs.mycompany.com"</code> or <code>"https://registry.npmjs.org"</code>.
+                    Note that this URL may not be the same as where packages can be searched (such as{' '}
+                    <code>https://www.npmjs.org</code>). If you're unsure about the exact URL URL for a custom registry,
+                    check the URLs for packages that have already been resolved, such as those in existing lock files
+                    like <code>yarn.lock</code>.
                 </li>
                 <li>
-                    In the configuration below, set <Field>npmConfig.dependencies</Field> to the list of packages that
-                    you want to manually add. For example,
-                    <code>"react@17.0.2"</code> or <code>"@types/lodash@latest"</code>. Version ranges are not
+                    In the configuration below, set <Field>dependencies</Field> to the list of packages that you want to
+                    manually add. For example,
+                    <code>"react@17.0.2"</code> or <code>"@types/lodash@4.14.177"</code>. Version ranges are not
                     supported.
                 </li>
             </ol>

@@ -49,7 +49,7 @@ func TestNoMaliciousFilesNPM(t *testing.T) {
 	createMaliciousTgz(t, tgzPath)
 
 	s := NPMPackagesSyncer{
-		Config: &schema.NPMPackagesConnection{NpmConfig: &schema.NPMConfig{Dependencies: []string{}}},
+		Config: &schema.NPMPackagesConnection{Dependencies: []string{}},
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel() // cancel now  to prevent any network IO
@@ -88,7 +88,7 @@ func TestNPMCloneCommand(t *testing.T) {
 
 	npm.NPMBinary = npmScript(t, dir)
 	s := NPMPackagesSyncer{
-		Config: &schema.NPMPackagesConnection{NpmConfig: &schema.NPMConfig{Dependencies: []string{}}},
+		Config: &schema.NPMPackagesConnection{Dependencies: []string{}},
 	}
 	bareGitDirectory := path.Join(dir, "git")
 	s.runCloneCommand(t, bareGitDirectory, []string{exampleNPMVersionedPackage})
@@ -179,7 +179,7 @@ fi
 func (s NPMPackagesSyncer) runCloneCommand(t *testing.T, bareGitDirectory string, dependencies []string) {
 	t.Helper()
 	packageURL := vcs.URL{URL: url.URL{Path: exampleNPMPackageURL}}
-	s.Config.NpmConfig.Dependencies = dependencies
+	s.Config.Dependencies = dependencies
 	cmd, err := s.CloneCommand(context.Background(), &packageURL, bareGitDirectory)
 	assert.Nil(t, err)
 	assert.Nil(t, cmd.Run())

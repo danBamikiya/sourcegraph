@@ -104,7 +104,7 @@ func npmPackages(connection schema.NPMPackagesConnection) ([]reposource.NPMPacka
 }
 
 func npmDependencies(connection schema.NPMPackagesConnection) (dependencies []reposource.NPMDependency, err error) {
-	for _, dep := range connection.NpmConfig.Dependencies {
+	for _, dep := range connection.Dependencies {
 		dependency, err := reposource.ParseNPMDependency(dep)
 		if err != nil {
 			return nil, err

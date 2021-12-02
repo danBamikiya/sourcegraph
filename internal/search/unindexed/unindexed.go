@@ -337,3 +337,32 @@ func (t *RepoSubsetTextSearch) Run(ctx context.Context, stream streaming.Sender,
 func (*RepoSubsetTextSearch) Name() string {
 	return "RepoSubsetText"
 }
+
+type RepoUniverseTextSearch struct {
+	GlobalZoektQuery *zoektutil.GlobalZoektQuery
+	ZoektArgs        *search.ZoektParameters
+	SearcherArgs     *search.SearcherParameters
+	FileMatchLimit   int32
+	NotSearcherOnly  bool
+
+	// TODO(team/search-core): Pass the private repositories resolved at
+	// runtime via the third argument in the Run function. The pager needs
+	// to unify []types.MinimalRepo with repos.Resolved for this to be
+	// possible, and it should expose <private repositories> as another kind
+	// of repo data that parameterizes a search.
+	UserPrivateRepos []types.MinimalRepo
+}
+
+func (t *RepoUniverseTextSearch) Run(ctx context.Context, stream streaming.Sender, repos searchrepos.Pager) error {
+	ctx, stream, cleanup := streaming.WithLimit(ctx, stream, int(t.FileMatchLimit))
+	defer cleanup()
+
+	t.GlobalZoektQuery.ApplyPrivateFilter(t.UserPrivateRepos)
+	t.ZoektArgs.Query = t.GlobalZoektQuery.Generate()
+	request := &zoektutil.IndexedUniverseSearchRequest{Args: t.ZoektArgs}
+	return SearchFilesInRepos(ctx, request, t.SearcherArgs, t.NotSearcherOnly, stream)
+}
+
+func (*RepoUniverseTextSearch) Name() string {
+	return "RepoUniverseText"
+}

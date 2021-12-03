@@ -18,6 +18,7 @@ import (
 	"github.com/lib/pq"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+
 	"github.com/sourcegraph/sourcegraph/internal/extsvc/pagure"
 
 	"github.com/sourcegraph/sourcegraph/internal/actor"

@@ -9,6 +9,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/sourcegraph/sourcegraph/internal/ratelimit"
+
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/keegancsmith/sqlf"
@@ -1803,7 +1805,7 @@ func testSyncReposWithLastErrors(s *repos.Store) func(*testing.T) {
 		}
 
 		// Run the syncer, which should find the repo with non-empty last_error and delete it
-		syncer.SyncReposWithLastErrors(ctx)
+		syncer.SyncReposWithLastErrors(ctx, ratelimit.DefaultRegistry)
 
 		// TODO: figure out how to do this without a sleep (i.e. subscribing to a channel or something)
 		time.Sleep(5 * time.Second)

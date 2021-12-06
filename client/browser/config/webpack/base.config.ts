@@ -5,7 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import webpack, { optimize } from 'webpack'
 
-import { getCSSLoaders } from '@sourcegraph/build-config'
+import { babelLoader, getCSSLoaders } from '@sourcegraph/build-config'
 
 import { subtypeOf } from '../../../shared/src/util/types'
 
@@ -17,14 +17,6 @@ const backgroundEntry = path.resolve(browserSourcePath, 'config/background.entry
 const optionsEntry = path.resolve(browserSourcePath, 'config/options.entry.js')
 const pageEntry = path.resolve(browserSourcePath, 'config/page.entry.js')
 const extensionEntry = path.resolve(browserSourcePath, 'config/extension.entry.js')
-
-const babelLoader = {
-    loader: 'babel-loader',
-    options: {
-        cacheDirectory: true,
-        configFile: path.join(__dirname, '..', '..', 'babel.config.js'),
-    },
-}
 
 const extensionHostWorker = /main\.worker\.ts$/
 

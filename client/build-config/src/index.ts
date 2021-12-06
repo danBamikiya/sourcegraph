@@ -1,3 +1,5 @@
-export * from './webpack/getCssLoaders'
 export * from './paths'
+export * from './webpack/getCssLoaders'
+export * from './webpack/babel-loader'
 export * from './webpack/monaco-editor'
+export * from './webpack/getCacheConfig'

@@ -13,7 +13,8 @@ const webpack = require('webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 
-const { getMonacoWebpackPlugin, getCSSLoaders } = require('@sourcegraph/build-config')
+const { babelLoader } = require('@sourcegraph/build-config')
+const { getCacheConfig, getMonacoWebpackPlugin, getCSSLoaders } = require('@sourcegraph/build-config')
 
 const { getHTMLWebpackPlugins } = require('./dev/webpack/get-html-webpack-plugins')
 const { isHotReloadEnabled } = require('./src/integration/environment')
@@ -57,14 +58,6 @@ const enterpriseDirectory = path.resolve(__dirname, 'src', 'enterprise')
 
 const styleLoader = isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader
 
-const babelLoader = {
-  loader: 'babel-loader',
-  options: {
-    cacheDirectory: true,
-    configFile: path.join(__dirname, 'babel.config.js'),
-  },
-}
-
 const extensionHostWorker = /main\.worker\.ts$/
 
 /** @type {import('webpack').Configuration} */
@@ -84,18 +77,7 @@ const config = {
   },
   target: 'browserslist',
   // Use cache only in `development` mode to speed up production build.
-  cache: isCacheEnabled && {
-    type: 'filesystem',
-    buildDependencies: {
-      // Invalidate cache on config change.
-      config: [
-        __filename,
-        path.resolve(__dirname, 'babel.config.js'),
-        path.resolve(rootPath, 'babel.config.js'),
-        path.resolve(rootPath, 'postcss.config.js'),
-      ],
-    },
-  },
+  cache: isCacheEnabled && getCacheConfig(path.resolve(__dirname, 'babel.config.js')),
   optimization: {
     minimize: isProduction,
     minimizer: [

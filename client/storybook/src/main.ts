@@ -15,6 +15,7 @@ import {
     getMonacoTTFRule,
     getMonacoWebpackPlugin,
     getCSSLoaders,
+    getCacheConfig,
 } from '@sourcegraph/build-config'
 
 import { ensureDllBundleIsReady } from './dllPlugin'
@@ -133,19 +134,10 @@ const config = {
             ]
         } else {
             // Use cache only in `development` mode to speed up production build.
-            config.cache = {
-                type: 'filesystem',
-                buildDependencies: {
-                    // Invalidate cache on config change.
-                    config: [
-                        __filename,
-                        path.resolve(storybookWorkspacePath, 'babel.config.js'),
-                        path.resolve(ROOT_PATH, 'babel.config.js'),
-                        path.resolve(ROOT_PATH, 'postcss.config.js'),
-                        path.resolve(__dirname, './webpack.config.dll.ts'),
-                    ],
-                },
-            }
+            config.cache = getCacheConfig(
+                path.resolve(storybookWorkspacePath, 'babel.config.js'),
+                path.resolve(__dirname, './webpack.config.dll.ts')
+            )
         }
 
         // We don't use Storybook's default Babel config for our repo, it doesn't include everything we need.

@@ -49,6 +49,7 @@ func TestIntegration(t *testing.T) {
 		{"Syncer/ConflictingSyncers", testConflictingSyncers},
 		{"Syncer/SyncRepoMaintainsOtherSources", testSyncRepoMaintainsOtherSources},
 		{"Syncer/SyncReposWithLastErrors", testSyncReposWithLastErrors},
+		{"Syncer/SyncReposWithLastErrorsHitRateLimit", testSyncReposWithLastErrorsHitsRateLimiter},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			db := dbtest.NewFromDSN(t, *dsn)

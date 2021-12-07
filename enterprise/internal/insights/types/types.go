@@ -30,6 +30,8 @@ type InsightViewSeries struct {
 	OtherThreshold                *float64
 	PresentationType              PresentationType
 	GeneratedFromCaptureGroups    bool
+	JustInTime                    bool
+	GenerationMethod              GenerationMethod
 }
 
 type Insight struct {
@@ -84,6 +86,8 @@ type InsightSeries struct {
 	SampleIntervalUnit         string
 	SampleIntervalValue        int
 	GeneratedFromCaptureGroups bool
+	JustInTime                 bool
+	GenerationMethod           GenerationMethod
 }
 
 type IntervalUnit string
@@ -94,6 +98,15 @@ const (
 	Week  IntervalUnit = "WEEK"
 	Year  IntervalUnit = "YEAR"
 	Hour  IntervalUnit = "HOUR"
+)
+
+// GenerationMethod represents the method of execution for which to populate time series data for an insight series. This is effectively an enum of values.
+type GenerationMethod string
+
+const (
+	Search        GenerationMethod = "search"
+	SearchCompute GenerationMethod = "search-compute"
+	LanguageStats GenerationMethod = "language-stats"
 )
 
 type DirtyQuery struct {

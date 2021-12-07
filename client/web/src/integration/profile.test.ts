@@ -9,6 +9,24 @@ import { createWebIntegrationTestContext, WebIntegrationTestContext } from './co
 import { commonWebGraphQlResults } from './graphQlResults'
 
 describe('User profile page', () => {
+    const USER: UserSettingsAreaUserFields = {
+        __typename: 'User',
+        id: 'VXNlcjoxODkyNw==',
+        username: 'test',
+        displayName: 'Test',
+        url: '/users/test',
+        settingsURL: '/users/test/settings',
+        avatarURL: '',
+        viewerCanAdminister: true,
+        viewerCanChangeUsername: true,
+        siteAdmin: true,
+        builtinAuth: true,
+        createdAt: '2020-04-10T21:11:42Z',
+        emails: [{ email: 'test@example.com', verified: true }],
+        organizations: { nodes: [] },
+        tags: [],
+    }
+
     let driver: Driver
     before(async () => {
         driver = await createDriverForTest()
@@ -26,23 +44,6 @@ describe('User profile page', () => {
     afterEach(() => testContext?.dispose())
 
     it('updates display name', async () => {
-        const USER: UserSettingsAreaUserFields = {
-            __typename: 'User',
-            id: 'VXNlcjoxODkyNw==',
-            username: 'test',
-            displayName: 'Test',
-            url: '/users/test',
-            settingsURL: '/users/test/settings',
-            avatarURL: '',
-            viewerCanAdminister: true,
-            viewerCanChangeUsername: true,
-            siteAdmin: true,
-            builtinAuth: true,
-            createdAt: '2020-04-10T21:11:42Z',
-            emails: [{ email: 'test@example.com', verified: true }],
-            organizations: { nodes: [] },
-            tags: [],
-        }
         testContext.overrideGraphQL({
             ...commonWebGraphQlResults,
             UserAreaUserProfile: () => ({

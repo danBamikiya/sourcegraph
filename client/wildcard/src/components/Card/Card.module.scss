@@ -1,0 +1,110 @@
+$border-width: 1px !default;
+$border-radius: 0.25rem !default;
+$card-inner-border-radius: subtract($border-radius, $border-width) !default;
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+    word-wrap: break-word;
+    background-color: var(--card-bg);
+    background-clip: border-box;
+    border-width: $border-width;
+    border-style: solid;
+    border-color: var(--card-border-color);
+    border-radius: var(--border-radius);
+
+    --card-bg: var(--color-bg-1);
+
+    --card-border-color: var(--border-color);
+
+    --card-spacer-y: 0.5rem;
+
+    --card-spacer-x: 0.5rem;
+
+    > hr {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    > :global(.list-group) {
+        border-top: inherit;
+        border-bottom: inherit;
+
+        &:first-child {
+            border-top-width: 0;
+        }
+
+        &:last-child {
+            border-bottom-width: 0;
+        }
+    }
+
+    /* Due to specificity of the above selector (`.card > .list-group`), we must */
+
+    /* use a child selector here to prevent double borders.*/
+    > :global(.card-header) + :global(.list-group),
+    > :global(.list-group) + :global(.card-footer) {
+        border-top: 0;
+    }
+
+    /* Header navs */
+    :global(.card-header-tabs) {
+        margin-right: -0.5rem / 2;
+        margin-bottom: -0.5rem;
+        margin-left: -0.5rem / 2;
+        border-bottom: 0;
+    }
+
+    :global(.card-header-pills) {
+        margin-right: -0.5rem / 2;
+        margin-left: -0.5rem / 2;
+    }
+
+    /* Card image */
+    :global(.card-img-overlay) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 1.25rem;
+        border-radius: 0.25rem;
+    }
+
+    :global(.card-img),
+    :global(.card-img-top),
+    :global(.card-img-bottom) {
+        flex-shrink: 0; // For IE: https://github.com/twbs/bootstrap/issues/29396
+        width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
+    }
+
+    :global(.card-img),
+    .card-img-top {
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+    }
+
+    :global(.card-img),
+    :global(.card-img-bottom) {
+        border-bottom-right-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+}
+
+.card-interactive {
+    cursor: pointer;
+    &:hover:not(:global(.focus)):not(:focus):not(:active) {
+        border-width: 2px;
+
+        --card-border-color: var(--blue);
+    }
+
+    &:focus,
+    &:active {
+        box-shadow: 0 0 0 2px var(--primary-2);
+
+        --card-border-color: var(--white);
+    }
+}

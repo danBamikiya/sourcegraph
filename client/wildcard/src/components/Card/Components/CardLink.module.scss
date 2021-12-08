@@ -1,0 +1,8 @@
+.card-link {
+    + .card-link {
+        margin-left: 0.5rem;
+    }
+    &:hover {
+        text-decoration: none;
+    }
+}

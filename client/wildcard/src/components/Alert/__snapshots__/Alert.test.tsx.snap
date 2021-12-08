@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert Renders variant 'danger' correctly 1`] = `
+<div
+  class="alert alert-danger"
+>
+  <h4>
+    A shiny 
+    danger
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;
+
+exports[`Alert Renders variant 'info' correctly 1`] = `
+<div
+  class="alert alert-info"
+>
+  <h4>
+    A shiny 
+    info
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;
+
+exports[`Alert Renders variant 'merged' correctly 1`] = `
+<div
+  class="alert alert-merged"
+>
+  <h4>
+    A shiny 
+    merged
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;
+
+exports[`Alert Renders variant 'primary' correctly 1`] = `
+<div
+  class="alert alert-primary"
+>
+  <h4>
+    A shiny 
+    primary
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;
+
+exports[`Alert Renders variant 'secondary' correctly 1`] = `
+<div
+  class="alert alert-secondary"
+>
+  <h4>
+    A shiny 
+    secondary
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;
+
+exports[`Alert Renders variant 'success' correctly 1`] = `
+<div
+  class="alert alert-success"
+>
+  <h4>
+    A shiny 
+    success
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;
+
+exports[`Alert Renders variant 'warning' correctly 1`] = `
+<div
+  class="alert alert-warning"
+>
+  <h4>
+    A shiny 
+    warning
+     alert - check it out!
+  </h4>
+  It can also contain 
+  <a
+    href="/"
+  >
+    links like this
+  </a>
+</div>
+`;

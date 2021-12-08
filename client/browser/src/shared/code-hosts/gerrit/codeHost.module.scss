@@ -4,13 +4,14 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 }
 
-.hover-overlay-mount__gerrit {
-    // Styles for the hover overlay
-    .hover-overlay__contents code {
+:global(.hover-overlay-mount__gerrit) {
+    /* Styles for the hover overlay */
+    :global(.hover-overlay__contents) code {
         font-family: 'Roboto Mono', 'SF Mono', 'Lucida Console', Monaco, monospace;
         font-size: 12px;
     }
-    .hover-overlay__close-button {
+
+    :global(.hover-overlay__close-button) {
         border: none;
         background-color: transparent;
         cursor: pointer;
@@ -20,13 +21,13 @@
         }
     }
 
-    .hover-overlay__actions {
+    :global(.hover-overlay__actions) {
         background-color: rgba(250, 250, 250, 255);
         justify-content: space-around;
         padding: 4px;
     }
 
-    .hover-overlay__action {
+    :global(.hover-overlay__action) {
         color: rgba(42, 102, 217, 255);
         padding: 5px 4px;
         flex: none;
@@ -34,7 +35,7 @@
         text-decoration: none;
         text-transform: uppercase;
 
-        // Copied from Gerrit styles
+        /* Copied from Gerrit styles */
         font-family: Roboto, -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif;
 
         &:hover {
@@ -43,7 +44,7 @@
         }
     }
 
-    .hover-overlay__action svg {
+    :global(.hover-overlay__action) svg {
         height: 12px;
         width: 12px;
     }

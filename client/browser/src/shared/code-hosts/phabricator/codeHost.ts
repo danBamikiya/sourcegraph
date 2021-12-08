@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { map } from 'rxjs/operators'
 
 import { Position } from '@sourcegraph/extension-api-types'
@@ -12,6 +13,7 @@ import { CodeView, toCodeViewResolver } from '../shared/codeViews'
 import { createNotificationClassNameGetter } from '../shared/getNotificationClassName'
 import { ViewResolver } from '../shared/views'
 
+import styles from './codeHost.module.scss'
 import { diffDomFunctions, diffusionDOMFns } from './domFunctions'
 import { resolveDiffFileInfo, resolveDiffusionFileInfo, resolveRevisionFileInfo } from './fileInfo'
 
@@ -189,15 +191,15 @@ export const phabricatorCodeHost: CodeHost = {
     // TODO: handle parsing selected line number from Phabricator href,
     // and find a way to listen to changes (Phabricator does not emit popstate events).
     codeViewToolbarClassProps: {
-        actionItemClass: 'button grey action-item--phabricator',
-        actionItemIconClass: 'icon--phabricator',
+        actionItemClass: classNames('button grey', styles.actionItemPhabricator),
+        actionItemIconClass: styles.iconPhabricator,
     },
     notificationClassNames,
     hoverOverlayClassProps: {
-        className: 'aphront-dialog-view hover-overlay--phabricator',
-        actionItemClassName: 'button grey hover-overlay-action-item--phabricator',
-        closeButtonClassName: 'button grey btn-icon--phabricator',
-        iconClassName: 'icon--phabricator',
+        className: classNames('aphront-dialog-view', styles.hoverOverlayPhabricator),
+        actionItemClassName: classNames('button grey', styles.hoverOverlayActionItemPhabricator),
+        closeButtonClassName: classNames('button grey', styles.btnIconPhabricator),
+        iconClassName: styles.iconPhabricator,
         getAlertClassName: createNotificationClassNameGetter(notificationClassNames),
     },
     codeViewsRequireTokenization: true,

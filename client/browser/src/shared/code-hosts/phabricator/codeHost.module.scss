@@ -3,7 +3,7 @@
 }
 
 .btn-icon--phabricator {
-    // Fight Phabricator selector specificity
+    /* Fight Phabricator selector specificity */
     background: transparent !important;
     border: none !important;
     padding: 0 !important;
@@ -13,14 +13,14 @@
     }
 }
 
-// Mimics Phabricator's font icon style
+/* Mimics Phabricator's font icon style */
 .icon--phabricator {
     height: 14px;
     width: 14px;
 }
 
 .action-item--phabricator[data-action-item-pressed='true'] {
-    // Phabricator doesn't seem to have a style for pressed, so we invent one
+    /* Phabricator doesn't seem to have a style for pressed, so we invent one */
     box-shadow: inset 0 0.15em 0.3em #cad2e2;
 }
 
@@ -29,9 +29,11 @@
     border-bottom: none !important;
     border-top: none !important;
     border-right: none !important;
-    .icon--phabricator {
+
+    :global(.icon--phabricator) {
         vertical-align: middle;
     }
+
     &:first-child {
         border-left: none !important;
     }

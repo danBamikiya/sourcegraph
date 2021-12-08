@@ -1,10 +1,10 @@
-// Command palette
+/* Command palette */
 .command-palette-button--bitbucket-server {
     z-index: 3000;
     font-size: 13px;
 
-    svg {
-        // The icon we use is taller than the other items' font size, so make it a bit shorter.
+    svg & {
+        /* The icon we use is taller than the other items' font size, so make it a bit shorter. */
         height: 13px;
     }
 }
@@ -13,28 +13,28 @@
     display: block !important;
     max-width: unset !important;
 
-    header {
+    header & {
         padding: 8px;
     }
 
-    input {
+    input & {
         max-width: unset !important;
     }
 
-    .no-results {
+    :global(.no-results) {
         padding: 10px;
     }
 }
 
-// Open on Sourcegraph button
+/* Open on Sourcegraph button */
 .open-on-sourcegraph--bitbucket-server {
-    margin-left: 2px; // same as other buttons in the row
+    margin-left: 2px; /* same as other buttons in the row */
 }
 
 .sg-toolbar-mount-bitbucket-server,
 .code-view-toolbar--bitbucket {
-    // Layout action item children within the .secondary wrapping context,
-    // so they wrap together with the native Bitbucket buttons
+    /* Layout action item children within the .secondary wrapping context,
+     * so they wrap together with the native Bitbucket buttons */
     display: contents;
 }
 
@@ -64,22 +64,23 @@
     }
 }
 
-// Use flexbox instead of float, so we can handle wrapping action items
-.file-toolbar {
+/* Use flexbox instead of float, so we can handle wrapping action items */
+:global(.file-toolbar) {
     display: flex;
     align-items: center;
-    // Trigger a two-row layout if file path and action items don't fit all in one row.
+
+    /* Trigger a two-row layout if file path and action items don't fit all in one row. */
     flex-wrap: wrap;
 
-    > .primary {
-        // Make sure file paths don't wrap to make space for buttons
-        // (instead trigger a two-row layout if it does not fit)
+    > :global(.primary) {
+        /* Make sure file paths don't wrap to make space for buttons
+         * (instead trigger a two-row layout if it does not fit) */
         flex: 0 2 auto;
         order: 1;
     }
 
-    > .secondary {
-        // Overrides
+    > :global(.secondary) {
+        /* Overrides */
         float: none;
         white-space: normal;
         line-height: initial;
@@ -92,14 +93,14 @@
         align-items: center;
         justify-content: flex-end;
 
-        > .aui-buttons {
-            // Layout all child buttons within the parent wrapping context (.secondary),
-            // so they wrap together with our toolbar buttons.
+        > :global(.aui-buttons) {
+            /* Layout all child buttons within the parent wrapping context (.secondary),
+             * so they wrap together with our toolbar buttons. */
             display: contents;
 
-            > .aui-button {
-                // Reapply margins that are on the .aui-buttons element to the .aui-button elements,
-                // because the display: contents removes margins from the .aui-buttons element
+            > :global(.aui-button) {
+                /* Reapply margins that are on the .aui-buttons element to the .aui-button elements,
+                 * because the display: contents removes margins from the .aui-buttons element */
                 margin-left: 5px;
                 margin-top: 5px;
             }
@@ -107,42 +108,8 @@
     }
 }
 
-// Hover overlay buttons
-.hover-action-item--bitbucket-server {
-    margin: 0 !important;
-    border-radius: 0 !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-right: none !important;
-
-    &:first-child {
-        border-left: none !important;
-    }
-
-    // Add margin between buttons. Important is required to override the rule above.
-    & + & {
-        margin-left: 0.25rem !important;
-    }
-}
-
-.btn-icon--bitbucket-server {
-    padding: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    height: 16px !important;
-    line-height: 16px !important;
-
-    &.close {
-        margin-right: -1.25rem;
-    }
-
-    &:hover {
-        opacity: 0.7;
-    }
-}
-
-// Bitbucket's style is copied here because adding the aui-dropdown2-trigger class
-// to the command palette causes exceptions in Atlassian's JS.
+/* Bitbucket's style is copied here because adding the aui-dropdown2-trigger class
+ * to the command palette causes exceptions in Atlassian's JS. */
 .command-list-popover-button--bitbucket-server {
     padding-right: 24px !important;
 

@@ -137,3 +137,37 @@
     margin-top: var(--hover-overlay-content-margin-top);
     margin-bottom: 0.5rem;
 }
+
+/* Hover overlay buttons */
+:global(.hover-action-item--bitbucket-server) {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border-bottom: none !important;
+    border-top: none !important;
+    border-right: none !important;
+
+    &:first-child {
+        border-left: none !important;
+    }
+
+    /* Add margin between buttons. Important is required to override the rule above. */
+    & + & {
+        margin-left: 0.25rem !important;
+    }
+}
+
+:global(.btn-icon--bitbucket-server) {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    height: 1rem !important;
+    line-height: 1rem !important;
+
+    &:global(.close) {
+        margin-right: -1.25rem;
+    }
+
+    &:hover {
+        opacity: 0.7;
+    }
+}

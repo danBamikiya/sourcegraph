@@ -1,0 +1,26 @@
+.panel {
+    position: fixed;
+    padding: 0.3rem 0.5rem;
+
+    background-color: var(--color-bg-1);
+}
+
+.bottom {
+    border-top: 2px solid var(--border-color-2);
+    min-height: 10rem;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.side {
+    border-left: 2px solid var(--border-color-2);
+    min-width: 10rem;
+    height: 100%;
+    top: 0;
+    right: 0;
+}
+
+.dismiss-button {
+    color: var(--icon-color);
+}

@@ -228,3 +228,42 @@ func (info *fileInfo) Mode() fs.FileMode  { return 0600 }
 func (info *fileInfo) ModTime() time.Time { return time.Unix(0, 0) }
 func (info *fileInfo) IsDir() bool        { return false }
 func (info *fileInfo) Sys() interface{}   { return nil }
+
+func TestDecompressTgz(t *testing.T) {
+	table := []struct {
+		paths  []string
+		expect []string
+	}{
+		// Check that stripping the outermost shared directory works if all
+		// paths have a common outermost directory.
+		{[]string{"d/f1", "d/f2"}, []string{"f1", "f2"}},
+		{[]string{"d1/d2/f1", "d1/d2/f2"}, []string{"d2"}},
+		{[]string{"d1/f1", "d2/f2", "d3/f3"}, []string{"d1", "d2", "d3"}},
+	}
+
+	for _, testData := range table {
+		dir, err := os.MkdirTemp("", "")
+		assert.Nil(t, err)
+		defer func() { assert.Nil(t, os.RemoveAll(dir)) }()
+
+		tarballName := "test.tgz"
+		tgzPath := path.Join(dir, tarballName)
+		// Creating a tarball with empty files fails???
+		fileInfos := []fileInfo{}
+		for _, path := range testData.paths {
+			fileInfos = append(fileInfos, fileInfo{path: path, contents: []byte("x")})
+		}
+		createTgz(t, tgzPath, fileInfos)
+		assert.Nil(t, decompressTgz(tgzPath, dir))
+		dirEntries, err := os.ReadDir(dir)
+		assert.Nil(t, err)
+		dirEntryNames := []string{}
+		for _, entry := range dirEntries {
+			if entry.Name() == tarballName {
+				continue
+			}
+			dirEntryNames = append(dirEntryNames, entry.Name())
+		}
+		assert.True(t, reflect.DeepEqual(dirEntryNames, testData.expect))
+	}
+}

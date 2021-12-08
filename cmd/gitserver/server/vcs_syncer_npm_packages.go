@@ -281,7 +281,7 @@ func (s *NPMPackagesSyncer) commitTgz(ctx context.Context, dependency reposource
 	return nil
 }
 
-func decompressTgz(tgzPath, destination string) (err error) {
+func withTgz(tgzPath string, action func(*tar.Reader) error) (err error) {
 	ioReader, err := os.Open(tgzPath)
 	errMsg := "unable to decompress tgz file with package source"
 	if err != nil {
@@ -299,40 +299,89 @@ func decompressTgz(tgzPath, destination string) (err error) {
 	}
 	tarReader := tar.NewReader(gzipReader)
 
-	count := 0
-	tarballFileLimit := 10000
-	for count < tarballFileLimit {
-		header, err := tarReader.Next()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return errors.Wrapf(err, "failed to read tar file %s", tgzPath)
-		}
+	return action(tarReader)
+}
 
-		name := header.Name
-		destinationDir := strings.TrimSuffix(destination, string(os.PathSeparator)) + string(os.PathSeparator)
-		cleanedOutputPath, isPotentiallyMalicious := isPotentiallyMaliciousFilepathInArchive(name, destinationDir)
-		if isPotentiallyMalicious {
-			continue
-		}
-		switch header.Typeflag {
-		case tar.TypeDir:
-			continue // We will create directories later; empty directories don't matter for git.
-		case tar.TypeReg:
-			err = copyTarFileEntry(header, tarReader, cleanedOutputPath)
-			if err != nil {
-				return err
+// Decompress a tarball at tgzPath, putting the files under destination.
+//
+// Additionally, if all the files in the tarball have paths of the form
+// dir/<blah> for the same directory 'dir', the 'dir' will be stripped.
+func decompressTgz(tgzPath, destination string) (err error) {
+	// [NOTE: npm-strip-outermost-directory]
+	// In practice, NPM tarballs seem to contain a superfluous directory which
+	// contains the files. For example, if you extract react's tarball,
+	// all files will be under a package/ directory, and if you extract
+	// @types/lodash's files, all files are under lodash/.
+	//
+	// However, this additional directory has no meaning. Moreover, it makes
+	// the UX slightly worse, as when you navigate to a repo, you would see
+	// that it contains just 1 folder, and you'd need to click again to drill
+	// down further. So we strip the superfluous directory if we detect one.
+	//
+	// https://github.com/sourcegraph/sourcegraph/pull/28057#issuecomment-987890718
+	var superfluousDirName *string = nil
+	commonSuperfluousDirectory := true
+	err = withTgz(tgzPath, func(reader *tar.Reader) (err error) {
+		count := 0
+		tarballFileLimit := 10000
+		for count < tarballFileLimit {
+			header, err := reader.Next()
+			if err == io.EOF {
+				return nil
 			}
-			count++
-		default:
-			return errors.Errorf("unrecognized type of header %+v in tarball %+v", header.Typeflag, path.Base(tgzPath))
+			if err != nil {
+				return errors.Wrapf(err, "failed to read tar file %s", tgzPath)
+			}
+			switch header.Typeflag {
+			case tar.TypeReg:
+				outermostDir := strings.SplitN(header.Name, string(os.PathSeparator), 2)[0]
+				if superfluousDirName == nil {
+					superfluousDirName = &outermostDir
+				} else if *superfluousDirName != outermostDir {
+					commonSuperfluousDirectory = false
+				}
+				count++
+			default:
+				continue
+			}
 		}
-	}
-	if count == tarballFileLimit && err == nil {
 		return fmt.Errorf("number of files in tarball %s exceeded limit (10000)", path.Base(tgzPath))
+	})
+	if err != nil {
+		return err
 	}
-	return err
+	if !commonSuperfluousDirectory {
+		log15.Warn("found npm tarball which doesn't have all files in one top-level directory", "tarball", path.Base(tgzPath))
+	}
+
+	return withTgz(tgzPath, func(tarReader *tar.Reader) (err error) {
+		destinationDir := strings.TrimSuffix(destination, string(os.PathSeparator)) + string(os.PathSeparator)
+		for {
+			header, err := tarReader.Next()
+			if err == io.EOF {
+				return nil
+			}
+			name := header.Name
+			if commonSuperfluousDirectory {
+				name = strings.SplitN(name, string(os.PathSeparator), 2)[1]
+			}
+			cleanedOutputPath, isPotentiallyMalicious := isPotentiallyMaliciousFilepathInArchive(name, destinationDir)
+			if isPotentiallyMalicious {
+				continue
+			}
+			switch header.Typeflag {
+			case tar.TypeDir:
+				continue // We will create directories later; empty directories don't matter for git.
+			case tar.TypeReg:
+				err = copyTarFileEntry(header, tarReader, cleanedOutputPath)
+				if err != nil {
+					return err
+				}
+			default:
+				return errors.Errorf("unrecognized type of header %+v in tarball %+v", header.Typeflag, path.Base(tgzPath))
+			}
+		}
+	})
 }
 
 func copyTarFileEntry(header *tar.Header, tarReader *tar.Reader, outputPath string) (err error) {
